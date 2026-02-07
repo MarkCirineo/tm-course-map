@@ -27,12 +27,14 @@ export async function POST(request: NextRequest) {
         update: mapCourseUpdate(item, now),
       });
 
+      await db.hole.deleteMany({ where: { courseId: course.id } });
       await db.tee.deleteMany({ where: { courseId: course.id } });
 
       const tees = item.tees ?? [];
-      if (tees.length > 0) {
-        await db.tee.createMany({
-          data: tees.map((t) => ({
+      const teeIds: string[] = [];
+      for (const t of tees) {
+        const tee = await db.tee.create({
+          data: {
             courseId: course.id,
             par: t.par ?? undefined,
             courseDistance: t.courseDistance ?? undefined,
@@ -41,8 +43,34 @@ export async function POST(request: NextRequest) {
             gender: t.gender ?? undefined,
             kind: t.kind ?? undefined,
             name: t.name ?? undefined,
-          })),
+          },
         });
+        teeIds.push(tee.id);
+      }
+
+      const holes = item.holes ?? [];
+      for (let i = 0; i < holes.length; i++) {
+        const holeItem = holes[i];
+        const hole = await db.hole.create({
+          data: {
+            courseId: course.id,
+            name: holeItem.name ?? undefined,
+            holeIndex: i,
+          },
+        });
+        const holeTees = holeItem.tees ?? [];
+        for (let j = 0; j < holeTees.length && j < teeIds.length; j++) {
+          const ht = holeTees[j];
+          await db.holeTee.create({
+            data: {
+              holeId: hole.id,
+              teeId: teeIds[j],
+              distance: ht.distance ?? undefined,
+              strokeIndex: ht.strokeIndex ?? undefined,
+              par: ht.par ?? undefined,
+            },
+          });
+        }
       }
     }
 

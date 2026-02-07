@@ -21,6 +21,8 @@ query getCoursesList($skip: Int, $take: Int) {
         name
         tees {
           distance
+          strokeIndex
+          par
         }
         images {
           url
@@ -73,7 +75,11 @@ export type TrackmanCourseItem = {
   tags?: string[] | null;
   holes?: Array<{
     name?: string | null;
-    tees?: Array<{ distance?: number | null }> | null;
+    tees?: Array<{
+      distance?: number | null;
+      strokeIndex?: number | null;
+      par?: number | null;
+    }> | null;
     images?: Array<{ url?: string | null }> | null;
   }> | null;
   difficulty?: number | null;

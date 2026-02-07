@@ -31,14 +31,15 @@ model Course {
   googleMapUrl  String?
   syncedAt      DateTime?
   tees         Tee[]
+  holes        Hole[]
 
   @@index([displayName])
 }
 
 model Tee {
-  id             String  @id @default(cuid())
+  id             String    @id @default(cuid())
   courseId       String
-  course         Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  course         Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
   par            Int?
   courseDistance Int?
   courseRating   Float?
@@ -46,8 +47,36 @@ model Tee {
   gender         String?
   kind           String?
   name           String?
+  holeTees       HoleTee[]
 
   @@index([courseId])
   @@index([courseRating, slope])
   @@index([gender])
+}
+
+model Hole {
+  id        String    @id @default(cuid())
+  courseId  String
+  course    Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  name      String?
+  holeIndex Int       // 0-based order on the course
+  holeTees  HoleTee[]
+
+  @@unique([courseId, holeIndex])
+  @@index([courseId])
+}
+
+model HoleTee {
+  id          String @id @default(cuid())
+  holeId      String
+  hole        Hole   @relation(fields: [holeId], references: [id], onDelete: Cascade)
+  teeId       String
+  tee         Tee    @relation(fields: [teeId], references: [id], onDelete: Cascade)
+  distance    Int?
+  strokeIndex Int?
+  par         Int?
+
+  @@unique([holeId, teeId])
+  @@index([holeId])
+  @@index([teeId])
 }
