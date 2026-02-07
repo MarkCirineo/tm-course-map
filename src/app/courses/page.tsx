@@ -5,6 +5,7 @@ export const dynamic = "force-dynamic";
 import { CourseFilters } from "@/components/course-filters";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 const PAGE_SIZE = 50;
 
@@ -128,9 +129,9 @@ export default async function CoursesPage({
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {courses.map((course) => (
           <Link key={course.id} href={`/courses/${course.id}`}>
-            <Card className="h-full transition-colors hover:bg-muted/50">
+            <Card className={cn("h-full transition-colors hover:bg-muted/50", course.imageUrl && "pt-0")}>
               {course.imageUrl && (
-                <div className="relative aspect-video w-full overflow-hidden rounded-t-lg">
+                <div className="relative aspect-video w-full overflow-hidden rounded-t-xl">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={course.imageUrl}
