@@ -49,6 +49,7 @@ export function CourseFilters() {
                     form.querySelector('[name="slopeMax"]') as HTMLInputElement
                 )?.value;
                 const teeType = searchParams.get("teeType");
+                const holes = searchParams.get("holes");
                 updateParams({
                     q: q?.trim() || undefined,
                     ratingMin: ratingMin || undefined,
@@ -56,6 +57,7 @@ export function CourseFilters() {
                     slopeMin: slopeMin || undefined,
                     slopeMax: slopeMax || undefined,
                     teeType: teeType && teeType !== "all" ? teeType : undefined,
+                    holes: holes && holes !== "all" ? holes : undefined,
                 });
             }}
         >
@@ -143,6 +145,26 @@ export function CourseFilters() {
                         <SelectItem value="all">All</SelectItem>
                         <SelectItem value="MALE">Men&apos;s</SelectItem>
                         <SelectItem value="FEMALE">Women&apos;s</SelectItem>
+                    </SelectContent>
+                </Select>
+            </div>
+            <div className="flex flex-col gap-1">
+                <label htmlFor="holes" className="text-sm font-medium">
+                    Holes
+                </label>
+                <Select
+                    defaultValue={searchParams.get("holes") ?? "all"}
+                    onValueChange={v =>
+                        updateParams({ holes: v === "all" ? undefined : v })
+                    }
+                >
+                    <SelectTrigger id="holes" className="w-32">
+                        <SelectValue placeholder="All" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="all">All</SelectItem>
+                        <SelectItem value="9">9 holes</SelectItem>
+                        <SelectItem value="18">18 holes</SelectItem>
                     </SelectContent>
                 </Select>
             </div>

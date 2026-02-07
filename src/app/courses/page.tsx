@@ -81,6 +81,7 @@ export default async function CoursesPage({
   const slopeMin = parseNum(params.slopeMin);
   const slopeMax = parseNum(params.slopeMax);
   const teeType = parseStr(params.teeType);
+  const holes = parseNum(params.holes);
   const page = Math.max(1, parseNum(params.page) ?? 1);
 
   const teeConditions: { courseRating?: { gte?: number; lte?: number }; slope?: { gte?: number; lte?: number }; gender?: string } = {};
@@ -99,6 +100,7 @@ export default async function CoursesPage({
   const where = {
     ...(q ? { displayName: { contains: q, mode: "insensitive" as const } } : {}),
     ...(Object.keys(teeConditions).length > 0 ? { tees: { some: teeConditions } } : {}),
+    ...(holes != null ? { numbersOfHoles: holes } : {}),
   };
 
   const [courses, total] = await Promise.all([
