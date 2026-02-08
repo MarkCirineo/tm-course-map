@@ -44,17 +44,32 @@ export default async function CourseDetailPage({
               <p className="text-sm text-muted-foreground">{course.numbersOfHoles} holes</p>
             )}
           </div>
-          {course.googleMapUrl && (
-            <Button asChild variant="outline">
-              <a
-                href={course.googleMapUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                View on Google Maps
-              </a>
-            </Button>
-          )}
+          <div className="flex flex-wrap items-center gap-2">
+            {course.googleMapUrl && (
+              <Button asChild variant="outline">
+                <a
+                  href={course.googleMapUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View on Google Maps
+                </a>
+              </Button>
+            )}
+            {course.holes.length > 0 &&
+              course.holes.some((h) => h.imageUrls?.length > 0) && (
+                <HoleImagesModal
+                  holes={course.holes.map((h) => ({
+                    id: h.id,
+                    name: h.name,
+                    holeIndex: h.holeIndex,
+                    imageUrls: h.imageUrls ?? [],
+                    holeTees: h.holeTees,
+                  }))}
+                  tees={course.tees}
+                />
+              )}
+          </div>
         </div>
 
         {course.imageUrl && (
@@ -96,24 +111,6 @@ export default async function CourseDetailPage({
           </CardContent>
         </Card>
 
-        {course.holes.length > 0 &&
-          course.holes.some((h) => h.imageUrls?.length > 0) && (
-            <Card>
-              <CardHeader className="pb-2">
-                <h2 className="text-lg font-medium">Hole images</h2>
-              </CardHeader>
-              <CardContent>
-                <HoleImagesModal
-                  holes={course.holes.map((h) => ({
-                    id: h.id,
-                    name: h.name,
-                    holeIndex: h.holeIndex,
-                    imageUrls: h.imageUrls ?? [],
-                  }))}
-                />
-              </CardContent>
-            </Card>
-          )}
       </div>
     </main>
   );

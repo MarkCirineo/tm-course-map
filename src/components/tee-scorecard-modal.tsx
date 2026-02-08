@@ -159,18 +159,18 @@ export function TeeScorecardSection({
           className="max-h-[90vh] max-w-2xl overflow-y-auto"
           aria-describedby={undefined}
         >
-          {scorecardTee && (
-            <>
-              <DialogHeader>
-                <DialogTitle id="scorecard-title">
-                  Scorecard: {scorecardTee.name || "Tee"} — {course.displayName}
-                </DialogTitle>
-              </DialogHeader>
-              {course.holes.length === 0 ? (
-                <p className="text-muted-foreground text-sm">
-                  No hole data for this tee.
-                </p>
-              ) : (
+          <DialogHeader>
+            <DialogTitle id="scorecard-title">
+              {scorecardTee
+                ? `Scorecard: ${scorecardTee.name || "Tee"} — ${course.displayName}`
+                : "Scorecard"}
+            </DialogTitle>
+          </DialogHeader>
+          {scorecardTee && course.holes.length === 0 ? (
+            <p className="text-muted-foreground text-sm">
+              No hole data for this tee.
+            </p>
+          ) : scorecardTee ? (
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -307,9 +307,7 @@ export function TeeScorecardSection({
                     </TableRow>
                   </TableFooter>
                 </Table>
-              )}
-            </>
-          )}
+          ) : null}
         </DialogContent>
       </Dialog>
     </>

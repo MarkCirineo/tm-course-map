@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,24 +12,64 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
+type HoleTee = {
+  id: string;
+  holeId: string;
+  teeId: string;
+  distance: number | null;
+  strokeIndex: number | null;
+  par: number | null;
+};
+
+type Tee = {
+  id: string;
+  name: string | null;
+  courseDistance: number | null;
+  teeIndex: number;
+};
+
 type HoleForImages = {
   id: string;
   name: string | null;
   holeIndex: number;
   imageUrls: string[];
+  holeTees: HoleTee[];
 };
+
+function getHoleLabel(hole: HoleForImages): string {
+  const holeNum = hole.holeIndex + 1;
+  const name = hole.name?.trim();
+  return name && name !== String(holeNum) ? `${holeNum} — ${hole.name}` : String(holeNum);
+}
+
+function getFarthestTee(tees: Tee[]): Tee | undefined {
+  return [...tees].sort((a, b) => {
+    const distA = a.courseDistance ?? 0;
+    const distB = b.courseDistance ?? 0;
+    if (distB !== distA) return distB - distA;
+    return a.teeIndex - b.teeIndex;
+  })[0];
+}
 
 export function HoleImagesModal({
   holes,
+  tees,
   triggerLabel = "View hole images",
 }: {
   holes: HoleForImages[];
+  tees: Tee[];
   triggerLabel?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const farthestTee = useMemo(() => getFarthestTee(tees), [tees]);
+  const [selectedTee, setSelectedTee] = useState<Tee | null>(farthestTee ?? null);
+
   const hole = holes[currentIndex];
+  const holeTee = hole
+    ? hole.holeTees.find((ht) => ht.teeId === selectedTee?.id)
+    : undefined;
   const hasImages = holes.some((h) => h.imageUrls.length > 0);
   const canGoPrev = currentIndex > 0;
   const canGoNext = currentIndex < holes.length - 1;
@@ -39,6 +80,7 @@ export function HoleImagesModal({
   const handleOpenChange = (next: boolean) => {
     setOpen(next);
     if (!next) setCurrentIndex(0);
+    if (next && farthestTee) setSelectedTee(farthestTee);
   };
 
   if (!hasImages) return null;
@@ -58,8 +100,32 @@ export function HoleImagesModal({
           className="flex max-h-[90vh] max-w-2xl flex-col gap-4 overflow-hidden"
           aria-describedby={undefined}
         >
+          <DialogTitle id="hole-images-title">Hole images</DialogTitle>
           <DialogHeader>
-            <DialogTitle id="hole-images-title">Hole images</DialogTitle>
+            {tees.length > 0 && (
+              <div className="flex flex-wrap gap-1 pt-2">
+                {tees.map((tee) => (
+                  <Badge
+                    key={tee.id}
+                    variant={selectedTee?.id === tee.id ? "default" : "secondary"}
+                    className={cn(
+                      "cursor-pointer text-sm font-normal transition-opacity hover:opacity-90",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    )}
+                    asChild
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setSelectedTee(tee)}
+                      className="inline-flex items-center gap-1"
+                    >
+                      {tee.name || "Tee"}
+                      {tee.courseDistance != null && ` · ${tee.courseDistance} yd`}
+                    </button>
+                  </Badge>
+                ))}
+              </div>
+            )}
           </DialogHeader>
 
           {holes.length === 0 ? (
@@ -78,10 +144,15 @@ export function HoleImagesModal({
                   <ChevronLeftIcon className="size-4" />
                 </Button>
                 <div className="min-w-0 flex-1 text-center">
-                  <span className="font-medium">
-                    Hole {hole.holeIndex + 1}
-                    {hole.name ? ` — ${hole.name}` : ""}
-                  </span>
+                  <div>
+                    <span className="font-medium">Hole {getHoleLabel(hole)}</span>
+                    {selectedTee && (
+                      <p className="text-muted-foreground mt-1 text-sm">
+                        Par {holeTee?.par ?? "—"} · {holeTee?.distance ?? "—"} yd · SI{" "}
+                        {holeTee?.strokeIndex ?? "—"}
+                      </p>
+                    )}
+                  </div>
                 </div>
                 <Button
                   type="button"
@@ -110,11 +181,7 @@ export function HoleImagesModal({
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={url}
-                          alt={
-                            hole.name
-                              ? `${hole.name} image ${i + 1}`
-                              : `Hole ${hole.holeIndex + 1} image ${i + 1}`
-                          }
+                          alt={`Hole ${getHoleLabel(hole)} image ${i + 1}`}
                           className="h-auto w-full object-contain"
                         />
                       </div>
