@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
+import { auth, signIn } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,7 +45,11 @@ export default async function SignupPage({
           await db.user.create({
             data: { email, name, password: hashed },
           });
-          redirect("/login?signedUp=1");
+          await signIn("credentials", {
+            email,
+            password,
+            redirectTo: "/courses",
+          });
         }}
       >
         <div className="flex flex-col gap-2">
