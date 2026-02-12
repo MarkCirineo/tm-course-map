@@ -110,8 +110,8 @@ export function CourseCard({
     }
   };
 
-  const handleMarkAsPlayedSuccess = () => {
-    setFavorited(true); // might have been added via modal
+  const handleMarkAsPlayedSuccess = (addedToFavorites: boolean) => {
+    if (addedToFavorites) setFavorited(true);
   };
 
   const canFavorite = playedSummary.played;

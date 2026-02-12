@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { TeeScorecardSection } from "@/components/tee-scorecard-modal";
 import { HoleImagesModal } from "@/components/hole-images-modal";
 import { CourseDetailActions } from "@/components/course-detail-actions";
+import { PlayHistoryList } from "@/components/play-history-list";
 
 export const dynamic = "force-dynamic";
 
@@ -45,7 +46,10 @@ export default async function CourseDetailPage({
     userId
       ? db.coursePlay.findMany({
           where: { userId, courseId: id },
-          include: { tee: true },
+          include: {
+            tee: true,
+            holeScores: { include: { hole: { select: { holeIndex: true } } } },
+          },
           orderBy: { playedAt: "desc" },
         })
       : Promise.resolve([]),
@@ -166,32 +170,30 @@ export default async function CourseDetailPage({
               <h2 className="text-lg font-medium">Your play history</h2>
             </CardHeader>
             <CardContent>
-              <ul className="space-y-2">
-                {plays.map((play) => (
-                  <li
-                    key={play.id}
-                    className="flex flex-wrap items-center gap-2 text-sm"
-                  >
-                    <span className="text-muted-foreground">
-                      {new Date(play.playedAt).toLocaleDateString()}
-                    </span>
-                    <span>
-                      {play.tee.name || play.tee.gender || "Tee"} —
-                      {play.holesPlayed === "front"
-                        ? " Front 9"
-                        : play.holesPlayed === "back"
-                          ? " Back 9"
-                          : " Full 18"}
-                    </span>
-                    {play.overallScore != null && (
-                      <span className="font-medium">{play.overallScore}</span>
-                    )}
-                    {play.note && (
-                      <span className="text-muted-foreground">· {play.note}</span>
-                    )}
-                  </li>
-                ))}
-              </ul>
+              <PlayHistoryList
+                plays={plays.map((p) => ({
+                  id: p.id,
+                  playedAt: p.playedAt,
+                  tee: p.tee,
+                  holesPlayed: p.holesPlayed,
+                  overallScore: p.overallScore,
+                  note: p.note,
+                  holeScores: p.holeScores.map((hs) => ({
+                    holeId: hs.holeId,
+                    score: hs.score,
+                    hole: { holeIndex: hs.hole.holeIndex },
+                  })),
+                }))}
+                holes={course.holes.map((h) => ({
+                  id: h.id,
+                  holeIndex: h.holeIndex,
+                  holeTees: h.holeTees.map((ht) => ({
+                    teeId: ht.teeId,
+                    par: ht.par,
+                  })),
+                }))}
+                courseName={course.displayName}
+              />
             </CardContent>
           </Card>
         )}

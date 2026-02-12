@@ -2,6 +2,7 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { CourseCard } from "@/components/course-card";
+import { PlayHistoryList } from "@/components/play-history-list";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export const dynamic = "force-dynamic";
@@ -17,10 +18,14 @@ export default async function AccountPlayedPage() {
       course: {
         include: {
           tees: true,
-          holes: { orderBy: { holeIndex: "asc" }, select: { id: true, holeIndex: true } },
+          holes: {
+            orderBy: { holeIndex: "asc" },
+            include: { holeTees: true },
+          },
         },
       },
       tee: true,
+      holeScores: { include: { hole: { select: { holeIndex: true } } } },
     },
     orderBy: { playedAt: "desc" },
   });
@@ -45,7 +50,7 @@ export default async function AccountPlayedPage() {
     where: { id: { in: courseIds } },
     include: {
       tees: true,
-      holes: { orderBy: { holeIndex: "asc" }, select: { id: true, holeIndex: true } },
+      holes: { orderBy: { holeIndex: "asc" }, include: { holeTees: true } },
     },
   });
   const courseById = new Map(courses.map((c) => [c.id, c]));
@@ -109,32 +114,30 @@ export default async function AccountPlayedPage() {
                     </h2>
                   </CardHeader>
                   <CardContent className="pt-0">
-                    <ul className="space-y-2">
-                      {coursePlays.map((play) => (
-                        <li
-                          key={play.id}
-                          className="flex flex-wrap items-center gap-2 text-sm"
-                        >
-                          <span className="text-muted-foreground">
-                            {new Date(play.playedAt).toLocaleDateString()}
-                          </span>
-                          <span>
-                            {play.tee.name || play.tee.gender || "Tee"} —{" "}
-                            {play.holesPlayed === "front"
-                              ? "Front 9"
-                              : play.holesPlayed === "back"
-                                ? "Back 9"
-                                : "Full 18"}
-                          </span>
-                          {play.overallScore != null && (
-                            <span className="font-medium">{play.overallScore}</span>
-                          )}
-                          {play.note && (
-                            <span className="text-muted-foreground">· {play.note}</span>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
+                    <PlayHistoryList
+                      plays={coursePlays.map((p) => ({
+                        id: p.id,
+                        playedAt: p.playedAt,
+                        tee: p.tee,
+                        holesPlayed: p.holesPlayed,
+                        overallScore: p.overallScore,
+                        note: p.note,
+                        holeScores: p.holeScores.map((hs) => ({
+                          holeId: hs.holeId,
+                          score: hs.score,
+                          hole: { holeIndex: hs.hole.holeIndex },
+                        })),
+                      }))}
+                      holes={course.holes.map((h) => ({
+                        id: h.id,
+                        holeIndex: h.holeIndex,
+                        holeTees: h.holeTees.map((ht) => ({
+                          teeId: ht.teeId,
+                          par: ht.par,
+                        })),
+                      }))}
+                      courseName={course.displayName}
+                    />
                   </CardContent>
                 </Card>
               </div>
