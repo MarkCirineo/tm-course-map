@@ -142,7 +142,7 @@ export function CourseCard({
                   {course.displayName}
                 </h2>
                 {course.numbersOfHoles != null && (
-                  <Badge variant="outline" className="shrink-0 text-xs">
+                  <Badge variant="outline" className="shrink-0 bg-muted/50 text-xs">
                     {course.numbersOfHoles} hole{course.numbersOfHoles !== 1 ? "s" : ""}
                   </Badge>
                 )}
@@ -156,13 +156,13 @@ export function CourseCard({
             <CardContent className="pt-0">
               <div className="flex flex-wrap gap-1">
                 {course.tees.slice(0, 5).map((tee) => (
-                  <Badge key={tee.id} variant="secondary" className="text-xs">
+                  <Badge key={tee.id} variant="secondary" className="bg-muted text-xs">
                     {tee.name || tee.gender || "Tee"}: {tee.courseRating ?? "—"} /{" "}
                     {tee.slope ?? "—"}
                   </Badge>
                 ))}
                 {course.tees.length > 5 && (
-                  <Badge variant="outline" className="text-xs">
+                  <Badge variant="outline" className="bg-muted/50 text-xs">
                     +{course.tees.length - 5} more
                   </Badge>
                 )}
@@ -178,12 +178,12 @@ export function CourseCard({
           <Button
             variant="secondary"
             size="icon-xs"
-            className="size-8 rounded-full bg-background/90 shadow"
+            className="size-8 rounded-full bg-white/90 text-gray-900 shadow dark:bg-black/85 dark:text-white"
             onClick={handleBookmarkClick}
             title={bookmarked ? "Remove bookmark" : "Bookmark"}
           >
             {bookmarked ? (
-              <BookmarkCheck className="size-4 text-primary" />
+              <BookmarkCheck className="size-4 fill-gray-900 dark:fill-white" />
             ) : (
               <Bookmark className="size-4" />
             )}
@@ -191,7 +191,7 @@ export function CourseCard({
           <Button
             variant="secondary"
             size="icon-xs"
-            className="size-8 rounded-full bg-background/90 shadow"
+            className="size-8 rounded-full bg-white/90 text-gray-900 shadow dark:bg-black/85 dark:text-white"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -205,12 +205,12 @@ export function CourseCard({
             <Button
               variant="secondary"
               size="icon-xs"
-              className="size-8 rounded-full bg-background/90 shadow"
+              className="size-8 rounded-full bg-white/90 text-gray-900 shadow dark:bg-black/85 dark:text-white"
               onClick={handleFavoriteClick}
               title={favorited ? "Remove from favorites" : "Add to favorites"}
             >
               {favorited ? (
-                <Star className="size-4 fill-primary text-primary" />
+                <Star className="size-4 fill-gray-900 dark:fill-white" />
               ) : (
                 <StarOff className="size-4" />
               )}
@@ -220,7 +220,7 @@ export function CourseCard({
             <Button
               variant="secondary"
               size="icon-xs"
-              className="size-8 rounded-full bg-background/90 shadow"
+              className="size-8 rounded-full bg-white/90 text-gray-900 shadow dark:bg-black/85 dark:text-white"
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -228,14 +228,14 @@ export function CourseCard({
               }}
               title={note ? "Edit note" : "Add note"}
             >
-              <FileText className={cn("size-4", note && "text-primary")} />
+              <FileText className={cn("size-4", note && "fill-gray-900 dark:fill-white")} />
             </Button>
           )}
         </div>
         )}
         {isLoggedIn && playedSummary.played && (
           <div
-            className="absolute left-2 top-2 flex items-center gap-0.5 rounded bg-background/90 px-1.5 py-0.5 text-xs shadow"
+            className="absolute left-2 top-2 flex items-center gap-0.5 rounded bg-white/90 px-1.5 py-0.5 text-xs text-gray-900 shadow dark:bg-black/85 dark:text-white"
             title={
               playedSummary.lastHolesPlayed
                 ? `Played ${playedSummary.lastHolesPlayed}`
