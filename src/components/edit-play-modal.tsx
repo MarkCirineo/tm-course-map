@@ -68,14 +68,36 @@ export function EditPlayModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const scoreNum = overallScore.trim() ? parseInt(overallScore, 10) : undefined;
+    const holeScoresNum: Record<string, number> = {};
+    for (const [hid, val] of Object.entries(holeScores)) {
+      const n = parseInt(val, 10);
+      if (Number.isFinite(n)) holeScoresNum[hid] = n;
+    }
+
+    // If both overall and per-hole are provided, validate they match
+    const hasAllHoleScores =
+      holesToShow.length > 0 &&
+      holesToShow.every((h) => {
+        const val = holeScores[h.id];
+        const n = val != null ? parseInt(val, 10) : NaN;
+        return Number.isFinite(n);
+      });
+    if (scoreNum != null && hasAllHoleScores) {
+      const holeSum = holesToShow.reduce(
+        (sum, h) => sum + (holeScoresNum[h.id] ?? 0),
+        0,
+      );
+      if (holeSum !== scoreNum) {
+        toast.error(
+          `Per-hole total (${holeSum}) doesn't match overall score (${scoreNum}). Please fix any typos.`,
+        );
+        return;
+      }
+    }
+
     setSubmitting(true);
     try {
-      const scoreNum = overallScore.trim() ? parseInt(overallScore, 10) : undefined;
-      const holeScoresNum: Record<string, number> = {};
-      for (const [hid, val] of Object.entries(holeScores)) {
-        const n = parseInt(val, 10);
-        if (Number.isFinite(n)) holeScoresNum[hid] = n;
-      }
       const result = await updateCoursePlay({
         playId: play.id,
         overallScore: scoreNum,
