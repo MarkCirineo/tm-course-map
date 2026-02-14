@@ -92,7 +92,7 @@ export function EditPlayModal({
     try {
       const result = await updateCoursePlay({
         playId: play.id,
-        overallScore: scoreNum,
+        overallScore: scoreNum ?? null,
         note: note.trim() || null,
         holeScores: holeScoresNum,
       });

@@ -114,8 +114,8 @@ export async function updateCoursePlay(input: UpdateCoursePlayInput) {
     await db.coursePlay.update({
       where: { id: playId },
       data: {
-        overallScore: overallScore ?? undefined,
-        note: note?.trim() || undefined,
+        overallScore: overallScore === undefined ? null : overallScore,
+        note: note === undefined ? null : (note?.trim() || null),
       },
     });
 
