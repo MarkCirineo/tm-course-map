@@ -8,7 +8,9 @@
     "start": "dotenv -e .env -- next start",
     "lint": "eslint",
     "postinstall": "prisma generate",
-    "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,json,md}\""
+    "format": "prettier --write \"src/**/*.{js,ts,jsx,tsx,json,md}\"",
+    "orphans": "dotenv -e .env -- npx tsx scripts/find-orphan-courses.ts",
+    "orphans:delete": "dotenv -e .env -- npx tsx scripts/find-orphan-courses.ts --delete"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",
