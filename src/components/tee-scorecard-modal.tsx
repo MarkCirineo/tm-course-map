@@ -149,7 +149,7 @@ export function TeeScorecardSection({ course }: { course: CourseForScorecard }) 
                   const name = hole.name?.trim();
                   const holeLabel =
                     name && name !== String(holeNum)
-                      ? `${holeNum} — ${hole.name}`
+                      ? `${holeNum} — ${name}`
                       : String(holeNum);
                   return (
                     <TableRow key={hole.id}>
@@ -184,7 +184,7 @@ export function TeeScorecardSection({ course }: { course: CourseForScorecard }) 
                   const name = hole.name?.trim();
                   const holeLabel =
                     name && name !== String(holeNum)
-                      ? `${holeNum} — ${hole.name}`
+                      ? `${holeNum} — ${name}`
                       : String(holeNum);
                   return (
                     <TableRow key={hole.id}>
