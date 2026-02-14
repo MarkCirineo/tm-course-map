@@ -11,11 +11,7 @@ import { PlayHistoryList } from "@/components/play-history-list";
 
 export const dynamic = "force-dynamic";
 
-export default async function CourseDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function CourseDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   const session = await auth();
@@ -100,39 +96,30 @@ export default async function CourseDetailPage({
             )}
             {course.googleMapUrl && (
               <Button asChild variant="outline">
-                <a
-                  href={course.googleMapUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={course.googleMapUrl} target="_blank" rel="noopener noreferrer">
                   View on Google Maps
                 </a>
               </Button>
             )}
-            {course.holes.length > 0 &&
-              course.holes.some((h) => h.imageUrls?.length > 0) && (
-                <HoleImagesModal
-                  holes={course.holes.map((h) => ({
-                    id: h.id,
-                    name: h.name,
-                    holeIndex: h.holeIndex,
-                    imageUrls: h.imageUrls ?? [],
-                    holeTees: h.holeTees,
-                  }))}
-                  tees={course.tees}
-                />
-              )}
+            {course.holes.length > 0 && course.holes.some((h) => h.imageUrls?.length > 0) && (
+              <HoleImagesModal
+                holes={course.holes.map((h) => ({
+                  id: h.id,
+                  name: h.name,
+                  holeIndex: h.holeIndex,
+                  imageUrls: h.imageUrls ?? [],
+                  holeTees: h.holeTees,
+                }))}
+                tees={course.tees}
+              />
+            )}
           </div>
         </div>
 
         {course.imageUrl && (
           <div className="aspect-video max-w-2xl overflow-hidden rounded-lg">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={course.imageUrl}
-              alt=""
-              className="h-full w-full object-cover"
-            />
+            <img src={course.imageUrl} alt="" className="h-full w-full object-cover" />
           </div>
         )}
 
@@ -157,9 +144,7 @@ export default async function CourseDetailPage({
               <h2 className="text-lg font-medium">Description</h2>
             </CardHeader>
             <CardContent>
-              <p className="whitespace-pre-wrap text-muted-foreground">
-                {course.description}
-              </p>
+              <p className="whitespace-pre-wrap text-muted-foreground">{course.description}</p>
             </CardContent>
           </Card>
         )}

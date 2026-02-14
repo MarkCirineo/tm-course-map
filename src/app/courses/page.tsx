@@ -83,7 +83,11 @@ export default async function CoursesPage({
   const holes = parseNum(params.holes);
   const page = Math.max(1, parseNum(params.page) ?? 1);
 
-  const teeConditions: { courseRating?: { gte?: number; lte?: number }; slope?: { gte?: number; lte?: number }; gender?: string } = {};
+  const teeConditions: {
+    courseRating?: { gte?: number; lte?: number };
+    slope?: { gte?: number; lte?: number };
+    gender?: string;
+  } = {};
   if (ratingMin != null || ratingMax != null) {
     teeConditions.courseRating = {};
     if (ratingMin != null) teeConditions.courseRating.gte = ratingMin;
@@ -159,47 +163,46 @@ export default async function CoursesPage({
       </p>
       {courses.length === 0 ? (
         <p className="mt-6 text-muted-foreground">
-          No courses match your filters. Try adjusting search or filter values, or run a sync to load data.
+          No courses match your filters. Try adjusting search or filter values, or run a sync to
+          load data.
         </p>
       ) : (
-      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {courses.map((course) => (
-          <CourseCard
-            key={course.id}
-            course={{
-              id: course.id,
-              displayName: course.displayName,
-              numbersOfHoles: course.numbersOfHoles,
-              courseLocation: course.courseLocation,
-              imageUrl: course.imageUrl,
-              tees: course.tees.map((t) => ({
-                id: t.id,
-                name: t.name,
-                gender: t.gender,
-                courseRating: t.courseRating,
-                slope: t.slope,
-              })),
-              holes: course.holes,
-            }}
-            isBookmarked={bookmarkedSet.has(course.id)}
-            bookmarkNote={bookmarkNoteByCourse.get(course.id) ?? null}
-            isFavorite={favoriteSet.has(course.id)}
-            playedSummary={{
-              played: playByCourse.has(course.id),
-              lastHolesPlayed: playByCourse.get(course.id)?.holesPlayed as
-                | "front"
-                | "back"
-                | "full"
-                | undefined,
-            }}
-            isLoggedIn={!!userId}
-          />
-        ))}
-      </div>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {courses.map((course) => (
+            <CourseCard
+              key={course.id}
+              course={{
+                id: course.id,
+                displayName: course.displayName,
+                numbersOfHoles: course.numbersOfHoles,
+                courseLocation: course.courseLocation,
+                imageUrl: course.imageUrl,
+                tees: course.tees.map((t) => ({
+                  id: t.id,
+                  name: t.name,
+                  gender: t.gender,
+                  courseRating: t.courseRating,
+                  slope: t.slope,
+                })),
+                holes: course.holes,
+              }}
+              isBookmarked={bookmarkedSet.has(course.id)}
+              bookmarkNote={bookmarkNoteByCourse.get(course.id) ?? null}
+              isFavorite={favoriteSet.has(course.id)}
+              playedSummary={{
+                played: playByCourse.has(course.id),
+                lastHolesPlayed: playByCourse.get(course.id)?.holesPlayed as
+                  | "front"
+                  | "back"
+                  | "full"
+                  | undefined,
+              }}
+              isLoggedIn={!!userId}
+            />
+          ))}
+        </div>
       )}
-      {totalPages > 1 && (
-        <PaginationLinks params={params} page={page} totalPages={totalPages} />
-      )}
+      {totalPages > 1 && <PaginationLinks params={params} page={page} totalPages={totalPages} />}
     </main>
   );
 }

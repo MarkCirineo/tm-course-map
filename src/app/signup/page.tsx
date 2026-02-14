@@ -56,13 +56,7 @@ export default async function SignupPage({
           <label htmlFor="name" className="text-sm font-medium">
             Name (optional)
           </label>
-          <Input
-            id="name"
-            name="name"
-            type="text"
-            autoComplete="name"
-            placeholder="Your name"
-          />
+          <Input id="name" name="name" type="text" autoComplete="name" placeholder="Your name" />
         </div>
         <div className="flex flex-col gap-2">
           <label htmlFor="email" className="text-sm font-medium">

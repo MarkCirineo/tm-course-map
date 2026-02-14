@@ -38,11 +38,7 @@ export function HeaderAuth({ user }: { user: SessionUser }) {
       >
         {user.image ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={user.image}
-            alt=""
-            className="size-6 rounded-full"
-          />
+          <img src={user.image} alt="" className="size-6 rounded-full" />
         ) : (
           <span className="flex size-6 items-center justify-center rounded-full bg-muted text-xs font-medium">
             {displayName.charAt(0).toUpperCase()}
@@ -100,10 +96,7 @@ export function HeaderAuth({ user }: { user: SessionUser }) {
 export function HeaderAuthLinks() {
   return (
     <div className="flex items-center gap-3">
-      <Link
-        href="/login"
-        className="text-sm text-muted-foreground hover:text-foreground"
-      >
+      <Link href="/login" className="text-sm text-muted-foreground hover:text-foreground">
         Log in
       </Link>
       <Button asChild size="sm">

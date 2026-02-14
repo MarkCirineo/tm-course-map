@@ -1,12 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -91,13 +86,10 @@ export function MarkAsPlayedModal({
         return Number.isFinite(n);
       });
     if (scoreNum != null && hasAllHoleScores) {
-      const holeSum = holesToShow.reduce(
-        (sum, h) => sum + (holeScoresNum[h.id] ?? 0),
-        0,
-      );
+      const holeSum = holesToShow.reduce((sum, h) => sum + (holeScoresNum[h.id] ?? 0), 0);
       if (holeSum !== scoreNum) {
         toast.error(
-          `Per-hole total (${holeSum}) doesn't match overall score (${scoreNum}). Please fix any typos.`,
+          `Per-hole total (${holeSum}) doesn't match overall score (${scoreNum}). Please fix any typos.`
         );
         return;
       }
@@ -149,7 +141,8 @@ export function MarkAsPlayedModal({
               <SelectContent>
                 {tees.map((tee) => (
                   <SelectItem key={tee.id} value={tee.id}>
-                    {tee.name || tee.gender || "Tee"}: {tee.courseRating ?? "—"} / {tee.slope ?? "—"}
+                    {tee.name || tee.gender || "Tee"}: {tee.courseRating ?? "—"} /{" "}
+                    {tee.slope ?? "—"}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -192,9 +185,7 @@ export function MarkAsPlayedModal({
             <div className="grid grid-cols-5 gap-1 sm:grid-cols-6">
               {holesToShow.map((hole) => (
                 <div key={hole.id} className="flex flex-col gap-0.5">
-                  <span className="text-xs text-muted-foreground">
-                    {hole.holeIndex + 1}
-                  </span>
+                  <span className="text-xs text-muted-foreground">{hole.holeIndex + 1}</span>
                   <Input
                     type="number"
                     min={1}
@@ -236,11 +227,7 @@ export function MarkAsPlayedModal({
           </label>
 
           <div className="flex justify-end gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-            >
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
               Cancel
             </Button>
             <Button type="submit" disabled={submitting}>

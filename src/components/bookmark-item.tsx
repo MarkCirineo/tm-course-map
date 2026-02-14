@@ -67,11 +67,7 @@ export function BookmarkItem({
           <div className="size-20 shrink-0 overflow-hidden rounded-md bg-muted">
             {imageUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={imageUrl}
-                alt=""
-                className="size-full object-cover"
-              />
+              <img src={imageUrl} alt="" className="size-full object-cover" />
             ) : (
               <div className="flex size-full items-center justify-center text-muted-foreground text-xs">
                 No image
@@ -124,9 +120,7 @@ export function BookmarkItem({
         </Link>
         {noteValue && (
           <div className="border-t bg-muted/30 px-3 py-2">
-            <p className="line-clamp-5 text-sm text-foreground/90">
-              {noteValue}
-            </p>
+            <p className="line-clamp-5 text-sm text-foreground/90">{noteValue}</p>
           </div>
         )}
       </div>

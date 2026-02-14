@@ -1,12 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { updateCoursePlay } from "@/app/actions/course-play";
@@ -59,12 +54,11 @@ export function EditPlayModal({
 
   const isFront = play.holesPlayed === "front";
   const isBack = play.holesPlayed === "back";
-  const holesToShow =
-    isFront
-      ? holes.filter((h) => h.holeIndex < 9)
-      : isBack
-        ? holes.filter((h) => h.holeIndex >= 9)
-        : holes;
+  const holesToShow = isFront
+    ? holes.filter((h) => h.holeIndex < 9)
+    : isBack
+      ? holes.filter((h) => h.holeIndex >= 9)
+      : holes;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,13 +78,10 @@ export function EditPlayModal({
         return Number.isFinite(n);
       });
     if (scoreNum != null && hasAllHoleScores) {
-      const holeSum = holesToShow.reduce(
-        (sum, h) => sum + (holeScoresNum[h.id] ?? 0),
-        0,
-      );
+      const holeSum = holesToShow.reduce((sum, h) => sum + (holeScoresNum[h.id] ?? 0), 0);
       if (holeSum !== scoreNum) {
         toast.error(
-          `Per-hole total (${holeSum}) doesn't match overall score (${scoreNum}). Please fix any typos.`,
+          `Per-hole total (${holeSum}) doesn't match overall score (${scoreNum}). Please fix any typos.`
         );
         return;
       }
@@ -129,7 +120,11 @@ export function EditPlayModal({
           <DialogTitle>Edit play — {courseName}</DialogTitle>
           <p className="text-sm text-muted-foreground">
             {dateStr} · {play.tee.name || "Tee"} ·{" "}
-            {play.holesPlayed === "front" ? "Front 9" : play.holesPlayed === "back" ? "Back 9" : "Full 18"}
+            {play.holesPlayed === "front"
+              ? "Front 9"
+              : play.holesPlayed === "back"
+                ? "Back 9"
+                : "Full 18"}
           </p>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -147,9 +142,7 @@ export function EditPlayModal({
 
           <div>
             <label className="mb-1 block text-sm font-medium">Per-hole scores (optional)</label>
-            <p className="mb-2 text-xs text-muted-foreground">
-              Add or edit scores for each hole
-            </p>
+            <p className="mb-2 text-xs text-muted-foreground">Add or edit scores for each hole</p>
             <div className="grid grid-cols-5 gap-1 sm:grid-cols-6">
               {holesToShow.map((hole) => (
                 <div key={hole.id} className="flex flex-col gap-0.5">

@@ -24,9 +24,7 @@ export default async function LoginPage({
     <main className="container mx-auto flex max-w-sm flex-col gap-6 px-4 py-16">
       <h1 className="text-2xl font-semibold">Log in</h1>
       {error === "CredentialsSignin" && (
-        <p className="text-sm text-destructive">
-          Invalid email or password. Please try again.
-        </p>
+        <p className="text-sm text-destructive">Invalid email or password. Please try again.</p>
       )}
       <form
         className="flex flex-col gap-4"
@@ -56,12 +54,7 @@ export default async function LoginPage({
           <label htmlFor="password" className="text-sm font-medium">
             Password
           </label>
-          <PasswordInput
-            id="password"
-            name="password"
-            autoComplete="current-password"
-            required
-          />
+          <PasswordInput id="password" name="password" autoComplete="current-password" required />
         </div>
         <Button type="submit">Log in</Button>
       </form>

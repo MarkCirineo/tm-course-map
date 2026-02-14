@@ -9,7 +9,12 @@ import { deleteCoursePlay } from "@/app/actions/course-play";
 import { toast } from "sonner";
 import { Pencil, Trash2 } from "lucide-react";
 
-type HoleTee = { teeId: string; par: number | null; distance: number | null; strokeIndex: number | null };
+type HoleTee = {
+  teeId: string;
+  par: number | null;
+  distance: number | null;
+  strokeIndex: number | null;
+};
 type HoleForScorecard = { id: string; holeIndex: number; holeTees: HoleTee[] };
 type PlayWithScores = {
   id: string;
@@ -105,9 +110,7 @@ export function PlayHistoryList({
                 </span>
               )}
             </div>
-            {play.note && (
-              <p className="text-muted-foreground text-xs">{play.note}</p>
-            )}
+            {play.note && <p className="text-muted-foreground text-xs">{play.note}</p>}
             <div>
               {play.holeScores.length > 0 ? (
                 <Button

@@ -4,7 +4,12 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { PlayHistoryList } from "@/components/play-history-list";
 
-type HoleTee = { teeId: string; par: number | null; distance: number | null; strokeIndex: number | null };
+type HoleTee = {
+  teeId: string;
+  par: number | null;
+  distance: number | null;
+  strokeIndex: number | null;
+};
 type HoleForScorecard = { id: string; holeIndex: number; holeTees: HoleTee[] };
 type PlayWithScores = {
   id: string;
@@ -52,9 +57,7 @@ export function PlayedCourseItem({
           <div className="flex items-start justify-between gap-2">
             <div>
               <h2 className="font-semibold leading-tight">{courseName}</h2>
-              {courseLocation && (
-                <p className="text-sm text-muted-foreground">{courseLocation}</p>
-              )}
+              {courseLocation && <p className="text-sm text-muted-foreground">{courseLocation}</p>}
             </div>
             {numbersOfHoles != null && (
               <Badge variant="outline" className="shrink-0 text-xs">
@@ -68,12 +71,7 @@ export function PlayedCourseItem({
         <h3 className="mb-2 text-sm font-medium text-muted-foreground">
           Play history ({plays.length})
         </h3>
-        <PlayHistoryList
-          plays={plays}
-          holes={holes}
-          courseName={courseName}
-          showEditDelete
-        />
+        <PlayHistoryList plays={plays} holes={holes} courseName={courseName} showEditDelete />
       </div>
     </div>
   );
