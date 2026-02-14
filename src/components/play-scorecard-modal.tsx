@@ -207,13 +207,13 @@ export function PlayScorecardModal({
                             <span>Par</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="inline-flex size-5 items-center justify-center rounded-sm border-2 border-background px-0.5 text-[10px]">
+                            <span className="inline-flex size-5 items-center justify-center rounded-none border-2 border-background px-0.5 text-[10px]">
                               5
                             </span>
                             <span>Bogey</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="inline-flex size-5 items-center justify-center rounded-sm border-2 border-background p-0.5">
+                            <span className="inline-flex size-5 items-center justify-center rounded-none border-2 border-background p-0.5">
                               <span className="flex size-3 items-center justify-center rounded-none border border-background text-[10px]">
                                 6
                               </span>
