@@ -50,7 +50,8 @@ export function EditPlayModal({
       }
       setHoleScores(scores);
     }
-  }, [open, play]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, play.id]);
 
   const isFront = play.holesPlayed === "front";
   const isBack = play.holesPlayed === "back";
