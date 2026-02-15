@@ -20,10 +20,10 @@ Example (run every Sunday at 3:00 AM):
 0 3 * * 0 curl -s -X POST -H "Authorization: Bearer $CRON_SECRET" "https://your-domain.com/api/sync"
 ```
 
-If you store the secret in a file (e.g. `/etc/tm-course-map/cron_secret`):
+If you store the secret in a file (e.g. `/etc/track-course/cron_secret`):
 
 ```bash
-0 3 * * 0 curl -s -X POST -H "Authorization: Bearer $(cat /etc/tm-course-map/cron_secret)" "https://your-domain.com/api/sync"
+0 3 * * 0 curl -s -X POST -H "Authorization: Bearer $(cat /etc/track-course/cron_secret)" "https://your-domain.com/api/sync"
 ```
 
 Or with the secret as a query parameter (less ideal for logs):

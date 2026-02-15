@@ -7,7 +7,7 @@ import { PasswordInput } from "@/components/password-input";
 
 export const metadata = {
   title: "Log in",
-  description: "Log in to Trackman Course Map",
+  description: "Log in to TrackCourse",
 };
 
 export default async function LoginPage({

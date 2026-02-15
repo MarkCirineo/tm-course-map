@@ -1,4 +1,4 @@
-# Trackman Course Map
+# TrackCourse
 
 View Trackman courses with slope and course rating. Data is synced from the Trackman GraphQL API into your own PostgreSQL database.
 
@@ -20,8 +20,7 @@ View Trackman courses with slope and course rating. Data is synced from the Trac
 2. **Environment**
 
    Copy `env.example` to `.env` and set:
-
-   - `DATABASE_URL` — PostgreSQL connection string (e.g. `postgresql://user:password@localhost:5432/tm_course_map`)
+   - `DATABASE_URL` — PostgreSQL connection string (e.g. `postgresql://user:password@localhost:5432/track_course`)
    - `CRON_SECRET` — Secret used to protect the `/api/sync` route (used by cron)
 
 3. **Database**
