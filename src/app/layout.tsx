@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Trackman Course Map",
+  title: "TrackCourse",
   description: "View Trackman courses with slope and course rating",
 };
 
@@ -41,7 +41,7 @@ export default function RootLayout({
           <header className="border-b">
             <nav className="container mx-auto flex h-14 items-center gap-6 px-4">
               <Link href="/" className="font-semibold">
-                Trackman Course Map
+                TrackCourse
               </Link>
               <Link href="/courses" className="text-muted-foreground hover:text-foreground">
                 List
