@@ -170,8 +170,7 @@ export default async function CoursesPage({
       </p>
       {courses.length === 0 ? (
         <p className="mt-6 text-muted-foreground">
-          No courses match your filters. Try adjusting search or filter values, or run a sync to
-          load data.
+          No courses match your filters. Try adjusting search or filter values.
         </p>
       ) : (
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
