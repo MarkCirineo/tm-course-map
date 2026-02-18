@@ -38,6 +38,7 @@ export function EditPlayModal({
   const [overallScore, setOverallScore] = useState("");
   const [note, setNote] = useState("");
   const [holeScores, setHoleScores] = useState<Record<string, string>>({});
+  const [playedAt, setPlayedAt] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -49,9 +50,11 @@ export function EditPlayModal({
         scores[hs.holeId] = String(hs.score);
       }
       setHoleScores(scores);
+      // Use ISO string to get the UTC date part (YYYY-MM-DD)
+      setPlayedAt(new Date(play.playedAt).toISOString().split("T")[0]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, play.id]);
+  }, [open, play.id, play.playedAt]);
 
   const isFront = play.holesPlayed === "front";
   const isBack = play.holesPlayed === "back";
@@ -95,6 +98,7 @@ export function EditPlayModal({
         overallScore: scoreNum ?? null,
         note: note.trim() || null,
         holeScores: holeScoresNum,
+        playedAt,
       });
       if (result.error) {
         toast.error(result.error);
@@ -112,6 +116,7 @@ export function EditPlayModal({
     weekday: "short",
     month: "short",
     day: "numeric",
+    timeZone: "UTC",
   });
 
   return (
@@ -129,6 +134,16 @@ export function EditPlayModal({
           </p>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div>
+            <label className="mb-1 block text-sm font-medium">Date</label>
+            <Input
+              type="date"
+              value={playedAt}
+              onChange={(e) => setPlayedAt(e.target.value)}
+              required
+            />
+          </div>
+
           <div>
             <label className="mb-1 block text-sm font-medium">Overall score (optional)</label>
             <Input

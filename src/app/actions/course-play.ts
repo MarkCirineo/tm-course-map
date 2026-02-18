@@ -16,13 +16,14 @@ export type CreateCoursePlayInput = {
   note?: string | null;
   holeScores?: Record<string, number>; // holeId -> score
   addToFavorites?: boolean;
+  playedAt?: string;
 };
 
 export async function createCoursePlay(input: CreateCoursePlayInput) {
   const session = await auth();
   if (!session?.user?.id) return { error: "Unauthorized" };
 
-  const { courseId, teeId, holesPlayed, overallScore, note, holeScores, addToFavorites } = input;
+  const { courseId, teeId, holesPlayed, overallScore, note, holeScores, addToFavorites, playedAt } = input;
 
   if (!HOLES_PLAYED_VALUES.includes(holesPlayed as HolesPlayed)) {
     return { error: "Invalid holes played" };
@@ -51,6 +52,7 @@ export async function createCoursePlay(input: CreateCoursePlayInput) {
         holesPlayed,
         overallScore: overallScore ?? undefined,
         note: note?.trim() || undefined,
+        playedAt: playedAt ? new Date(`${playedAt}T00:00:00Z`) : undefined,
       },
     });
 
@@ -96,13 +98,14 @@ export type UpdateCoursePlayInput = {
   overallScore?: number | null;
   note?: string | null;
   holeScores?: Record<string, number>;
+  playedAt?: string;
 };
 
 export async function updateCoursePlay(input: UpdateCoursePlayInput) {
   const session = await auth();
   if (!session?.user?.id) return { error: "Unauthorized" };
 
-  const { playId, overallScore, note, holeScores } = input;
+  const { playId, overallScore, note, holeScores, playedAt } = input;
 
   try {
     const play = await db.coursePlay.findFirst({
@@ -116,6 +119,7 @@ export async function updateCoursePlay(input: UpdateCoursePlayInput) {
       data: {
         overallScore: overallScore === undefined ? null : overallScore,
         note: note === undefined ? null : (note?.trim() || null),
+        playedAt: playedAt ? new Date(`${playedAt}T00:00:00Z`) : undefined,
       },
     });
 

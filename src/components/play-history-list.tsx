@@ -74,7 +74,9 @@ export function PlayHistoryList({
           >
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
               <span className="font-medium text-foreground">
-                {new Date(play.playedAt).toLocaleDateString()}
+                {new Date(play.playedAt).toLocaleDateString(undefined, {
+                  timeZone: "UTC",
+                })}
               </span>
               <span className="text-muted-foreground">
                 {play.tee.name || play.tee.gender || "Tee"} —

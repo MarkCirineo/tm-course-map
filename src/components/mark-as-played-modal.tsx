@@ -55,6 +55,8 @@ export function MarkAsPlayedModal({
   const [addToFavorites, setAddToFavorites] = useState(false);
   const [holeScores, setHoleScores] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
+  // Default to today YYYY-MM-DD
+  const [playedAt, setPlayedAt] = useState(() => new Date().toLocaleDateString("en-CA"));
 
   const is9Hole = numbersOfHoles === 9;
   const holesToShow =
@@ -105,6 +107,7 @@ export function MarkAsPlayedModal({
         note: note.trim() || null,
         holeScores: Object.keys(holeScoresNum).length > 0 ? holeScoresNum : undefined,
         addToFavorites,
+        playedAt,
       });
       if (result.error) {
         toast.error(result.error);
@@ -112,7 +115,9 @@ export function MarkAsPlayedModal({
       }
       toast.success("Marked as played");
       if (addToFavorites) toast.success("Added to favorites");
+      if (addToFavorites) toast.success("Added to favorites");
       onOpenChange(false);
+      setPlayedAt(new Date().toLocaleDateString("en-CA"));
       setTeeId("");
       setHolesPlayed("full");
       setOverallScore("");
@@ -167,6 +172,16 @@ export function MarkAsPlayedModal({
               </Select>
             </div>
           )}
+
+          <div>
+            <label className="mb-1 block text-sm font-medium">Date</label>
+            <Input
+              type="date"
+              value={playedAt}
+              onChange={(e) => setPlayedAt(e.target.value)}
+              required
+            />
+          </div>
 
           <div>
             <label className="mb-1 block text-sm font-medium">Overall score (optional)</label>
