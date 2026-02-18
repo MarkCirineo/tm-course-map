@@ -19,6 +19,7 @@ type HoleTee = {
 type Tee = {
   id: string;
   name: string | null;
+  gender: string | null;
   courseDistance: number | null;
   teeIndex: number;
 };
@@ -97,26 +98,45 @@ export function HoleImagesModal({
           <DialogHeader>
             {tees.length > 0 && (
               <div className="flex flex-wrap gap-1 pt-2">
-                {tees.map((tee) => (
-                  <Badge
-                    key={tee.id}
-                    variant={selectedTee?.id === tee.id ? "default" : "secondary"}
-                    className={cn(
-                      "cursor-pointer text-sm font-normal transition-opacity hover:opacity-90",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                    )}
-                    asChild
-                  >
-                    <button
-                      type="button"
-                      onClick={() => setSelectedTee(tee)}
-                      className="inline-flex items-center gap-1"
-                    >
-                      {tee.name || "Tee"}
-                      {tee.courseDistance != null && ` · ${tee.courseDistance} yd`}
-                    </button>
-                  </Badge>
-                ))}
+                {(() => {
+                  const teeNameCounts = tees.reduce((acc, tee) => {
+                    const name = tee.name || "Tee";
+                    acc[name] = (acc[name] || 0) + 1;
+                    return acc;
+                  }, {} as Record<string, number>);
+
+                  return tees.map((tee) => {
+                    const name = tee.name || "Tee";
+                    const isDuplicate = teeNameCounts[name] > 1;
+                    let displayName = name;
+                    
+                    if (isDuplicate && tee.gender) {
+                      if (tee.gender === "MALE") displayName = `(M) ${name}`;
+                      else if (tee.gender === "FEMALE") displayName = `(F) ${name}`;
+                    }
+
+                    return (
+                      <Badge
+                        key={tee.id}
+                        variant={selectedTee?.id === tee.id ? "default" : "secondary"}
+                        className={cn(
+                          "cursor-pointer text-sm font-normal transition-opacity hover:opacity-90",
+                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                        )}
+                        asChild
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setSelectedTee(tee)}
+                          className="inline-flex items-center gap-1"
+                        >
+                          {displayName}
+                          {tee.courseDistance != null && ` · ${tee.courseDistance} yd`}
+                        </button>
+                      </Badge>
+                    );
+                  });
+                })()}
               </div>
             )}
           </DialogHeader>
