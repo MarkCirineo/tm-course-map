@@ -110,6 +110,12 @@ export function CourseFilters() {
     searchParams
   ]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("courseSearchUrl", window.location.search);
+    }
+  }, [searchParams]);
+
   return (
     <div className="flex flex-wrap items-end gap-4 rounded-lg border p-4 bg-card text-card-foreground shadow-sm">
       <div className="flex flex-col gap-1.5">

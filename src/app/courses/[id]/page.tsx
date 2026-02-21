@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
@@ -8,6 +7,7 @@ import { TeeScorecardSection } from "@/components/tee-scorecard-modal";
 import { HoleImagesModal } from "@/components/hole-images-modal";
 import { CourseDetailActions } from "@/components/course-detail-actions";
 import { PlayHistoryList } from "@/components/play-history-list";
+import { BackToCoursesLink } from "@/components/back-to-courses-link";
 
 export const dynamic = "force-dynamic";
 
@@ -60,9 +60,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
 
   return (
     <main className="container mx-auto px-4 py-8">
-      <Link href="/courses" className="mb-6 inline-block text-primary hover:underline">
-        ← Back to courses
-      </Link>
+      <BackToCoursesLink />
       <div className="space-y-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
